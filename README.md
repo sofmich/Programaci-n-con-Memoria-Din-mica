@@ -1,2 +1,4 @@
 # test
-Test de repositorio. Act 1 Programación con Memoria DInámica
+Cambios en brand Read me.
+Repositorio de prueba para la materia de Programación con Memoria Dinámica.
+Simulación: cambios locales.
