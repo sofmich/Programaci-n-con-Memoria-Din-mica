@@ -1,4 +1,3 @@
 # test
-Test de repositorio. Act 1 Programación con Memoria DInámica.
-Repositorio de pruebas para Programación con Memoria Dinámica.
-Cambio número 1.
+Cambios en brand Read me.
+Repositorio de prueba para la materia de Programación con Memoria Dinámica.
