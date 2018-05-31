@@ -1,113 +1,141 @@
 /*
- * registro.c
+ * main.c
  *
- *  Created on: 23/05/2018
+ *  Created on: 30/05/2018
  *      Author: Momo
  */
+
 #include <stdio.h>
 #include <stdlib.h>
-#define max 50
-#define s printf("\n")
+#include <string.h>
 
 typedef struct{
-	unsigned int Expediente;
-	char Nombre[max];
-	unsigned int Carrera;
-	unsigned int Edad;
-} Alumno;
-
-void registrar(Alumno *p,int *lon);
-void imprimir(Alumno *p,int *lon);
-void eliminar(Alumno *p, int *lon);
-void buscar(Alumno *p, int *lon);
+	char nombre[15];
+	float calificacion;
+}Profesor;
+float averageArray(Profesor *parr,int *n);
+void readArray(Profesor arr[], int n);
+void mergeArrays(Profesor arr1[] , int *n1, Profesor arr2[], int *n2, Profesor arrF[], int *n3);
+void sortArray(Profesor arr[], int *plen);
+void printArray(Profesor arr[] , int *len);
 int main(){
+	//Profesor arr1[20];
 	setvbuf(stderr, NULL, _IONBF, 0);
 	setvbuf(stdout, NULL, _IONBF, 0);
+	Profesor arr1[20];  //Primer arreglo
+	Profesor arr2[20];  //Segundo arreglo
+	Profesor arrF[40];  //Arreglo final, con elementos fusionados y ordenados
+	int n1, n2, lenF; //Longitud de los arreglos
 
-	char opc;
-	Alumno alumnos[20];
-	Alumno *pA = alumnos;
-	int *lon;
-	while(opc != 101){
-		printf("= = = = = MENÚ = = = = =");
-		s;
-		printf("a.Registrar nuevo alumno\nb.Imprimir datos\nc.Eliminar alumno\nd.Buscar alumno\ne.Salir\n");
-		printf("Opción: ");
-		scanf("%c", &opc);
-		if(opc < 96 || opc > 102){
-			printf("Opción: ");
-			scanf("%c", &opc);
-		}
-		switch(opc){
-		case 97:
-			registrar(pA,lon);
-			break;
-		case 98:
-			if(*lon == 0){
-				printf("No existen alumnos registrados");
-			} else imprimir(pA,lon);
-			break;
-		case 99:
-			if(*lon == 0){
-				printf("No existen alumnos registrados");
-			} else{
-				imprimir(pA,lon);
-				eliminar(pA,lon);
-			}
-
-			break;
-		case 100:buscar(pA, lon); break;
-
-		}
+	//printf("Cantidad de profesores de ingeniería:");
+	scanf("%d", &n1);
+	while(n1 > 20){
+		scanf("%d", &n1);
 	}
+	readArray(arr1,n1);
+	//printf("Cantidad de profesores de otras carreras: ");
+	scanf("%d",&n2);
+	while(n2 > 20){
+			scanf("%d", &n2);
+		}
+	readArray(arr2,n2);
+	lenF = n1 + n2;
+	mergeArrays(arr1,&n1,arr2,&n2,arrF,&lenF);  //Fusionar los dos arreglos en un tercer arreglo
+	sortArray(arrF,&lenF);  //Ordenar los elementos del tercer arreglo, recuerde que pueden
+	printArray(arrF,&lenF);   //Imprimir el resultado final
+
 	return 0;
 }
-void registrar(Alumno *p,int *lon){
-	int i = *lon;
-	printf("Expediente: ");
-	scanf("%d",&(p+i)->Expediente);
-	fflush(stdin);
-	printf("Nombre: ");
-	scanf("%50[^\n]", &(p+i)->Nombre);
-	printf("Carrera: ");
-	scanf("%d", &(p+i)->Carrera);
-	printf("Edad:");
-	scanf("%d", &(p+i)->Edad);
-
-	(*lon) += 1;
+float averageArray(Profesor *parr,int *n){
+	int cant=*n;
+	float promedio=0;
+	for(int i=0;i<cant;i++)
+		promedio+=(parr+i)->calificacion;
+	return promedio/cant;
 }
-void imprimir(Alumno *p, int *lon){
-	int len = *(lon);
+readArray(Profesor arr[], int n){
 	int i;
-	for(i=0; i<len; i++){
-		printf ("Alumno %d: ", i+1);
-		printf("%d \t %s \t %d \t %d\n",(p+i)->Expediente, (p+i)->Nombre, (p+i)->Carrera, (p+i)->Edad);
+	Profesor *p = arr;
+	for(i = 0; i < n ; i++){
+		fflush(stdin);
+		//gets((p)->nombre);
+		//scanf("\n");
+		//scanf("%f",&(p)->calificacion);
+		scanf("%s	%f",&(p)->nombre,&(p)->calificacion);
+		p++;
 	}
 }
-void eliminar(Alumno *p, int *lon){
-	int alum;
-	printf("Ingresa el número de alumno que deseas eliminar: ");
-	scanf("%d", &alum);
-	for(int i = alum-1; i < (*lon); i++){
-		strcpy((p+i)->Nombre, (p+i+1)->Nombre);
-		(p+i)->Expediente = (p+i+1)->Expediente;
-		(p+i)->Carrera = (p+i+1)->Carrera;
-		(p+i)->Edad = (p+i+1)->Edad;
-	}
-	(*lon) -= 1;
-}
-void buscar(Alumno *p, int *lon){
-	int exp, i, bandera = 0;
-	printf("Ingresa el número de expediente: ");
-	scanf("%d", &exp);
-	for(i = 0; i < (*lon); i++){
-		if((p+i)->Expediente == exp){
-			printf("%d \t %s \t %d \t %d\n",(p+i)->Expediente, (p+i)->Nombre, (p+i)->Carrera, (p+i)->Edad);
-			bandera += 1;
+void mergeArrays(Profesor arr1[] , int *n1, Profesor arr2[], int *n2, Profesor arrF[],int *n3){
+	int k=0, i;
+	int len = *n3, len1 = *n1;
+	Profesor *p= arrF, *p1 = arr1, *p2 = arr2;
+	for(i=0;i<len;i++){
+		if(i<len1){
+			strcpy((p+i)->nombre,(p1+i)->nombre);
+			(p+i)->calificacion=(p1+i)->calificacion;
+		}
+		else{
+			strcpy((p+i)->nombre,(p2+k)->nombre);
+			(p+i)->calificacion=(p2+k)->calificacion;
+			k++;
 		}
 	}
-	if(bandera == 0){
-		printf("No se encontraron registros");
-	}
 
+}
+void sortArray(Profesor arrF[], int *plen){
+	int len = *plen;
+
+	Profesor aux_;
+	Profesor *paux = &aux_;
+	int c;
+	int i,j,l;
+	Profesor *p = arrF;
+	for(i = 0; i< len; i++){
+		c=1;
+		for(j = i+1;  j<len; j++){
+			if(strcmp((p+i)->nombre,(p+j)->nombre)==0){
+				strcpy(paux->nombre,(p+i+c)->nombre);
+				paux->calificacion=(p+i+c)->calificacion;
+				strcpy((p+i+c)->nombre,(p+j)->nombre);
+				(p+i+c)->calificacion=(p+j)->calificacion;
+				strcpy((p+j)->nombre,paux->nombre);
+				(p+j)->calificacion=paux->calificacion;
+				c++;
+			}
+		}
+		if(c>1)
+		{
+			(p+i)->calificacion=averageArray((p+i),&c);
+			for(l=i+1;l<len;l++)
+			{
+				strcpy((p+l)->nombre,(p+l+c-1)->nombre);
+				(p+l)->calificacion=(p+l+c-1)->calificacion;
+			}
+			len-=(c-1);
+		}
+	}
+	for(i=0;i<len;i++)
+			for(j=0;j<len-1;j++)
+			{
+				if((p+j)->calificacion<(p+j+1)->calificacion)
+				{
+					strcpy(paux->nombre,(p+j)->nombre);
+					paux->calificacion=(p+j)->calificacion;
+					strcpy((p+j)->nombre,(p+j+1)->nombre);
+					(p+j)->calificacion=(p+j+1)->calificacion;
+					strcpy((p+j+1)->nombre,paux->nombre);
+					(p+j+1)->calificacion=paux->calificacion;
+				}
+			}
+	*plen = len;
+}
+
+void printArray(Profesor arr[] , int *len){
+	Profesor *p = arr;
+	int i;
+	int lena = *len;
+	for(i=0;i<lena;i++){
+		printf("%s\t %.2f\n", p->nombre, p->calificacion);
+		p++;
+	}
 }
