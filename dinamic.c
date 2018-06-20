@@ -7,14 +7,18 @@
 #include <stdlib.h>
 #include <stdio.h>
 int main(){
-	int *ptr = NULL;
+	int n;
 	int i;
-	for (i =0; i<=10; i++){
-		ptr = (int *)malloc(64*sizeof(int));
-		(ptr)[10] = 5000;
-		printf("Dirección %d: %p\t",i+1, ptr);
-		printf("Valor en la posición 10: %d\n", ptr[10]);
-	}
+	printf("Size: ");
+	scanf("%d", &n);
+	int *p ;
+	p=(int*)malloc(n*sizeof(int)); //el valor a almacenar se guarda en el heap
+	printf("Values: \n");
+
+	for (i =0; i<n; i++) scanf("%d", &(*(p+i)));
+	printf("Values: \n");
+	for (i =0; i<n; i++) printf("%d\t", p[i]);
+	free(p); //libera el espacio en el heap
 	return 0;
 }
 
