@@ -20,7 +20,16 @@ int main(){
 	char expression[10];
 	printf("Expression: ");
 	fgets(expression, 10, stdin);
-	printf("%s",expression);
+	printf("%s\n",expression);
+	char*p = expression;
+	unsigned short aux =0;
+	while(*p != '\0'){
+		if(*p == 40) aux++;
+		if(*p == 41) aux --;
+		p++;
+	}
+	if(aux != 0) printf("Expresión mal elaborada.\n");
+	else printf("Expresión bien elaborada.\n");
 	return 0;
 }
 int main2(){
