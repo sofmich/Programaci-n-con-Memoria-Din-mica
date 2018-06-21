@@ -19,7 +19,7 @@ Type get(List, int);
 //Regresa el elemento en la posición indicada
 void set(List, Type, int);
 //Remplaza el elemtno en la posicion p por el valor recibido
-Type removee(List, int);
+Type Remove(List, int);
 //Elimina y devuelve el elemento en la posicion p, decrementa el tamaño en 1
 void insert(List, int, Type);
 //Inserta un elemento nuevo en la posicion p incrementando el tamaño

@@ -35,7 +35,7 @@ bool add(List list, Type data){
 		newNode -> last = NULL;
 		newNode -> prior = NULL;
 	}else{
-		list -> last->prior = newNode;
+		list -> last -> prior = newNode;
 		newNode -> prior = list -> last;
 		list -> last = newNode;
 	}
