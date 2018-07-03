@@ -32,19 +32,19 @@ int hasHigherPrecedence(char c){
 	{
 	case '+':
 	case '-':
-		return 1;
+		return 0;
 
 	case '*':
 	case '/':
-		return 2;
+		return 1;
 
 	case '^':
-		return 3;
+		return 2;
 	}
 	return -1;
 }
 int infixToPostfix(char* exp){
-	struct Stack* stack = createStack(strlen(exp));
+	 Stack* stack = createStack(strlen(exp));
 	int i, k;
 	if(!stack) return -1 ;
 	for (i = 0, k = -1; exp[i]; ++i)
